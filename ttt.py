@@ -33,9 +33,12 @@ class TicTacToe:
         # 2b. If invalid, output ??
         return
 
-
     def playAgainPrompt(self):
         # Prompt player to play again. If no, then print exit message. If yes, then run self.play()
+        return
+
+    def printOutput(result):
+        # Print the result of the game
         return
 
     # ~~~ Minimax functions ~~~
@@ -89,21 +92,23 @@ class TicTacToe:
         # No free squares left
         if '-' not in self.board:
             return "Cats"
+        # No end condition met (game not over yet)
         else:
             return ""
         
         
-
+    # Controlling function for game logic
     def play(self):
         while True:
             
             self.drawBoard()
-            if self.check_game_over() != "":
-                #Output Result of self.check_game_over()
+            result = self.check_game_over()
+            if result != "":
+                self.printOutput(result)
                 self.playAgainPrompt()
                 break
             else:
-                ++self.moves
+                self.moves += 1
 
             if (self.moves % 2) == 0:
                 # Player2's turn
