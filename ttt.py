@@ -1,5 +1,6 @@
 Class TicTacToe
 
+    # Attributes
     Moves - number of moves so far
     Player1 - goes 1st
     Player2 - goes 2nd
