@@ -56,6 +56,9 @@ class TicTacToe:
 
     def check_game_over(self):
 
+        # Output is 'X', 'O', or 'Cats' (for tie)
+        # Empty output ("") if game is not yet over
+
         # Winning combinations:
         # Horizontal: (0,1,2), (3,4,5), (6,7,8)
         # Vertical: (0,3,6), (1,4,7), (2,5,8)
@@ -68,8 +71,27 @@ class TicTacToe:
             return self.board[3]
         elif self.board[6] == self.board[7] == self.board[8]:
             return self.board[6]
+
+        # Vertical Wins
+        if self.board[0] == self.board[3] == self.board[6]:
+            return self.board[0]
+        elif self.board[1] == self.board[4] == self.board[7]:
+            return self.board[1]
+        elif self.board[2] == self.board[5] == self.board[8]:
+            return self.board[2]
+
+        # Diagonal Wins
+        if self.board[0] == self.board[4] == self.board[8]:
+            return self.board[0]
+        elif self.board[2] == self.board[4] == self.board[6]:
+            return self.board[2]
+
+        # No free squares left
+        if '-' not in self.board:
+            return "Cats"
+        else:
+            return ""
         
-        #Output is 'X', 'O', or 'Cats'
         
 
     def play(self):
