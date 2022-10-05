@@ -19,6 +19,7 @@ class TicTacToe:
     def drawBoard(self):
         # prints a visual representation of the board
         # Is run after every move
+        # Could clear console each time for a neat representation
         return
     
     def gamePrompt(self):
@@ -34,7 +35,7 @@ class TicTacToe:
 
 
     def playAgainPrompt(self):
-        # insert func
+        # Prompt player to play again. If no, then print exit message. If yes, then run self.play()
         return
 
     # ~~~ Minimax functions ~~~
