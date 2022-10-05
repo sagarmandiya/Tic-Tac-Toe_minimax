@@ -14,7 +14,7 @@ class TicTacToe:
         self.play()
 
 
-    # ~~~ UI / Game progression functions ~~~
+    # ~~~ UI functions ~~~
 
     def drawBoard(self):
         # prints a visual representation of the board
@@ -26,6 +26,23 @@ class TicTacToe:
         # Needs to set self.Player1 and self.Player2 as 'X' or 'O'
         return
 
+    def movePrompt(self):
+        # Use self.Player1 and self.Player2 (set in gamePrompt()) for the appropriate symbol
+        if (self.moves % 2) == 0:
+            # Player2's turn
+        else:
+            # Player1's turn
+        
+        # Set a default, invalid move
+        move = [-1,'-']
+
+        # Prompt player for a move
+        while True:
+
+            # Check first so that only valid moves will be returned by this function
+            if self.isValidMove(move != ""):
+                return move
+
     def isValidMove(self, move):
         # Accept Input func
         # 1. Validate the move
@@ -33,12 +50,12 @@ class TicTacToe:
         # 2b. If invalid, output ??
         return
 
-    def playAgainPrompt(self):
-        # Prompt player to play again. If no, then print exit message. If yes, then run self.play()
-        return
-
     def printOutput(result):
         # Print the result of the game
+        return
+
+    def playAgainPrompt(self):
+        # Prompt player to play again. If no, then print exit message. If yes, then run self.play()
         return
 
     # ~~~ Minimax functions ~~~
@@ -110,11 +127,8 @@ class TicTacToe:
             else:
                 self.moves += 1
 
-            if (self.moves % 2) == 0:
-                # Player2's turn
-                break
-            else:
-                # Player1's turn
+            self.movePrompt()
+            
                 break
             return
         return
