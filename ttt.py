@@ -1,14 +1,12 @@
-Class TicTacToe
+class TicTacToe:
 
     # Attributes
-    Moves - number of moves so far
-    Player1 - goes 1st
-    Player2 - goes 2nd
-    Board - string vector of length 9 ('-','X','O')
-    [Move is a vector of position (0-8) and symbol ('X','O')]
+    #Moves - number of moves so far
+    #Player1 - goes 1st
+    #Player2 - goes 2nd
+    #Board - string vector of length 9 ('-','X','O')
+    #[Move is a vector of position (0-8) and symbol ('X','O')]
     
-    Initializer
-        Player1 picks X or O? (or is this in play game)
 
     def __init__(self):
         self.moves = 0
@@ -16,21 +14,43 @@ Class TicTacToe
         self.play()
 
 
-    Draw board function
+    # ~~~ UI / Game progression functions ~~~
+
+    def drawBoard(self):
+        # insert func
+        return
+    
+    def gamePrompt(self):
+        # insert func
+        return
+
+    def isValidMove(self, move):
+        # Accept Input func
+        # 1. Validate the move
+        # 2a. Output the move if valid
+        # 2b. If invalid, output ??
+        return
 
 
-    Accept Input
-    - validate move
-    -> Output
+    def playAgainPrompt(self):
+        # insert func
+        return
 
-    Find best move
-    - Uses max and min functions recursively
+    # ~~~ Minimax functions ~~~
 
-    Max function
+    def findBestMove(self):
+        # Uses max and min functions recursively
+        return
 
-    Min function
+    def max(self):
+        # insert func
+        return
 
-    Play again prompt function
+    def min(self):
+        # insert func
+        return
+
+    # ~~~ Game Logic functions ~~~
 
     def check_game_over(self):
 
@@ -47,27 +67,34 @@ Class TicTacToe
         elif self.board[6] == self.board[7] == self.board[8]:
             return self.board[6]
         
-        Output is 'X', 'O', or 'Cats'
+        #Output is 'X', 'O', or 'Cats'
         
 
     def play(self):
         while True:
             
-            Draw board function
+            self.drawBoard()
             if self.check_game_over() != "":
-                Output Result function(self.check_game_over())
-                Play again prompt function
+                #Output Result of self.check_game_over()
+                self.playAgainPrompt()
                 break
             else:
-                self.moves++
+                ++self.moves
 
-            if (moves % 2) == 0:
-                Player2's turn
+            if (self.moves % 2) == 0:
+                # Player2's turn
+                break
             else:
-                Player1's turn
+                # Player1's turn
+                break
+            return
+        return
             
             
 
+def main():
+    ttt = TicTacToe()
+    ttt.play()
 
-Main
-- calls game class to play
+if __name__ == "__main__":
+    main()
