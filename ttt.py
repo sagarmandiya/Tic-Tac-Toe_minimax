@@ -17,7 +17,8 @@ class TicTacToe:
     # ~~~ UI / Game progression functions ~~~
 
     def drawBoard(self):
-        # insert func
+        # prints a visual representation of the board
+        # Is run after every move
         return
     
     def gamePrompt(self):
