@@ -21,7 +21,7 @@ class TicTacToe:
         return
     
     def gamePrompt(self):
-        # insert func
+        # Needs to set self.Player1 and self.Player2 as 'X' or 'O'
         return
 
     def isValidMove(self, move):
