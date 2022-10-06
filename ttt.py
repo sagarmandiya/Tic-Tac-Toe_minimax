@@ -1,13 +1,14 @@
 class TicTacToe:
 
     # Attributes
-    #Moves - number of moves so far
-    #Player1 - goes 1st
-    #Player2 - goes 2nd
-    #Board - string vector of length 9 ('-','X','O')
-    #[Move is a vector of position (0-8) and symbol ('X','O')]
+    #moves - number of moves so far
+    #board - string vector of length 9 ('-','X','O')
+    #p1_sym - string denoting the symbol of the player that goes 1st
+    #p2_sym - string denoting the symbol of the player that goes 2nd
+    #p1_ctrl - string of 'AI' or 'HMN' to indicate who is controlling this player
+    #p2_ctrl - string of 'AI' or 'HMN' to indicate who is controlling this player
     
-
+    
     def __init__(self):
         self.moves = 0
         self.board = ['-'] * 9
@@ -23,26 +24,48 @@ class TicTacToe:
         return
     
     def gamePrompt(self):
-        # Needs to set self.Player1 and self.Player2 as 'X' or 'O'
+        # Prompt to set self.p1_sym as 'X' or 'O' and self.p2_sym as the opposite
+        # Prompt to set self.p1_ctrl as 'AI' or 'HMN'
+        # Prompt to set self.p2_ctrl as 'AI' or 'HMN'
         return
 
     def movePrompt(self):
-        # Use self.Player1 and self.Player2 (set in gamePrompt()) for the appropriate symbol
-        if (self.moves % 2) == 0:
-            # Player2's turn
-        else:
-            # Player1's turn
         
-        # Set a default, invalid move
-        move = [-1,'-']
+        if (self.moves % 2) == 0:
+            # Player2's turn; use self.p2_sym for the appropriate symbol
+            curr_sym = self.p2_sym
+        else:
+            # Player1's turn; use self.p1_sym for the appropriate symbol
+            curr_sym = self.p1_sym
 
-        # Prompt player for a move
+        # A move is a vector of position (0-8) and symbol ('X','O')
+        # Set a default, invalid move to begin with
+        move = [-1, curr_sym]
+
         while True:
-
+            
             # Check first so that only valid moves will be returned by this function
             if self.isValidMove(move != ""):
                 return move
+            else:
+                # Prompt player for a move (change existing 'move' variable)
+                move
 
+
+    def getMove(self):
+        if (self.moves % 2) == 0:
+            # Player2's turn
+            if self.p2_ctrl == 'HMN':
+                return self.movePrompt()
+            else:
+                return self.findBestMove()
+        else:
+            # Player1's turn
+            if self.p1_ctrl == 'HMN':
+                return self.movePrompt()
+            else:
+                return self.findBestMove()
+    
     def isValidMove(self, move):
         # Accept Input func
         # 1. Validate the move
@@ -62,6 +85,7 @@ class TicTacToe:
 
     def findBestMove(self):
         # Uses max and min functions recursively
+        # Returns the best move
         return
 
     def max(self):
@@ -127,11 +151,7 @@ class TicTacToe:
             else:
                 self.moves += 1
 
-            self.movePrompt()
-            
-                break
-            return
-        return
+            self.getMove()
             
             
 
