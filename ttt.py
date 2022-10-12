@@ -1,3 +1,6 @@
+import math
+import os
+
 class TicTacToe:
 
     # Attributes
@@ -21,35 +24,40 @@ class TicTacToe:
         # prints a visual representation of the board
         # Is run after every move
         # Could clear console each time for a neat representation
-        return
+        board = self.board
+        print("\n")
+        print(" " + board[0] + " | "  + board[1] +  " | " + board[2])
+        print("---*---*---")
+        print(" " + board[3] + " | "  + board[4] +  " | " + board[5])
+        print("---*---*---")
+        print(" " + board[6] + " | "  + board[7] +  " | " + board[8])
+        print("\n")
     
     def gamePrompt(self):
         # Prompt to set self.p1_sym as 'X' or 'O' and self.p2_sym as the opposite
+        self.p1_sym = 'X'
+        self.p2_sym = 'O'
         # Prompt to set self.p1_ctrl as 'AI' or 'HMN'
+        self.p1_ctrl = 'HMN'
         # Prompt to set self.p2_ctrl as 'AI' or 'HMN'
+        self.p2_ctrl = 'AI'
+
         return
 
     def movePrompt(self):
-        
-        if (self.moves % 2) == 0:
-            # Player2's turn; use self.p2_sym for the appropriate symbol
-            curr_sym = self.p2_sym
-        else:
-            # Player1's turn; use self.p1_sym for the appropriate symbol
-            curr_sym = self.p1_sym
 
         # A move is a vector of position (0-8) and symbol ('X','O')
         # Set a default, invalid move to begin with
-        move = [-1, curr_sym]
+        move = -1
 
         while True:
             
             # Check first so that only valid moves will be returned by this function
-            if self.isValidMove(move != ""):
+            if self.isValidMove(move):
                 return move
             else:
                 # Prompt player for a move (change existing 'move' variable)
-                move
+                move = int(input("Enter the position [0-8]: ")) 
 
 
     def getMove(self):
@@ -71,10 +79,32 @@ class TicTacToe:
         # 1. Validate the move
         # 2a. Output the move if valid
         # 2b. If invalid, output ??
-        return
+        board = self.board
+        if board[move] == " ":
+            return True
+        else:
+            print("Invalid Move! Please try again. ")
+            return False
+
+    def makeMove(self, move):
+        if (self.moves % 2) == 0:
+            # Player2's turn; use self.p2_sym for the appropriate symbol
+            curr_sym = self.p2_sym
+        else:
+            # Player1's turn; use self.p1_sym for the appropriate symbol
+            curr_sym = self.p1_sym
+        
+        board = self.board
+        board[move] = curr_sym
+        os.system("clear")
+        self.drawBoard()
 
     def printOutput(result):
         # Print the result of the game
+        if(result == "Cats"):
+            print("\nDraw!\n")
+        else:
+            print("\n" + str(result) + " Won!\n")
         return
 
     def playAgainPrompt(self):
@@ -84,17 +114,92 @@ class TicTacToe:
     # ~~~ Minimax functions ~~~
 
     def findBestMove(self):
-        # Uses max and min functions recursively
         # Returns the best move
-        return
+        best_score = -math.inf
+        best_move = 0
+        board = self.board
 
-    def max(self):
-        # insert func
-        return
+        if (self.moves % 2) == 0:
+            # Player2's turn; use self.p2_sym for the appropriate symbol
+            curr_sym = self.p2_sym
+        else:
+            # Player1's turn; use self.p1_sym for the appropriate symbol
+            curr_sym = self.p1_sym
 
-    def min(self):
-        # insert func
+        for pos in range(len(board)):
+            if board[pos] == " ":
+                board[pos] = curr_sym
+                score = self.minimax(False)
+                # resetting the position
+                board[pos] = " "
+
+                if score > best_score:
+                    best_score = score
+                    best_move = pos 
+        
+        self.makeMove(best_move)
         return
+        
+
+    def minimax(self, maximize):
+        board = self.board
+        # opponent = "X" if player_char == "O" else "O"
+
+
+        if (self.moves % 2) == 0:
+            # Player2's turn; use self.p2_sym for the appropriate symbol
+            curr_sym = self.p2_sym
+        else:
+            # Player1's turn; use self.p1_sym for the appropriate symbol
+            curr_sym = self.p1_sym
+
+        if (curr_sym == 'X'):
+            next_sym = 'O'
+        else:
+            next_sym = 'X'
+
+        if self.check_game_over() == curr_sym:
+            return 1
+        elif self.check_game_over() == next_sym:
+            return -1
+        elif self.check_game_over() == "Cats":
+            return 0
+
+        if maximize:
+            best_score = -math.inf
+
+            for pos in range(len(board)):
+                if board[pos] == " ":
+                    board[pos] = curr_sym
+                    score = self.minimax(False)
+                    # print("*\n")
+                    # drawBoard(board)
+
+                    # resetting the position
+                    board[pos] = " "
+
+                    if score > best_score:
+                        best_score = score
+            
+            return best_score
+        
+        else:
+            best_score = math.inf
+
+            for pos in range(len(board)):
+                if board[pos] == " ":
+                    board[pos] = next_sym
+                    score = self.minimax(True)
+                    # print("$\n")
+                    # drawBoard(board)
+
+                    # resetting the position
+                    board[pos] = " "
+
+                    if score < best_score:
+                        best_score = score
+            
+            return best_score
 
     # ~~~ Game Logic functions ~~~
 
@@ -151,7 +256,7 @@ class TicTacToe:
             else:
                 self.moves += 1
 
-            self.getMove()
+            self.makeMove(self.getMove())
             
             
 
