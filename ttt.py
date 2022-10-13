@@ -57,17 +57,17 @@ class TicTacToe:
         B2.pack(side = 'top')
         B3.pack(side = 'top')
         menu.mainloop()
-        # prints a visual representation of the board
-        # Is run after every move
-        # Could clear console each time for a neat representation
-        board = self.board
-        print("\n")
-        print(" " + board[0] + " | "  + board[1] +  " | " + board[2])
-        print("---*---*---")
-        print(" " + board[3] + " | "  + board[4] +  " | " + board[5])
-        print("---*---*---")
-        print(" " + board[6] + " | "  + board[7] +  " | " + board[8])
-        print("\n")
+        # # prints a visual representation of the board
+        # # Is run after every move
+        # # Could clear console each time for a neat representation
+        # board = self.board
+        # print("\n")
+        # print(" " + board[0] + " | "  + board[1] +  " | " + board[2])
+        # print("---*---*---")
+        # print(" " + board[3] + " | "  + board[4] +  " | " + board[5])
+        # print("---*---*---")
+        # print(" " + board[6] + " | "  + board[7] +  " | " + board[8])
+        # print("\n")
     
     def gamePrompt(self):
         # Prompt to set self.p1_sym as 'X' or 'O' and self.p2_sym as the opposite
