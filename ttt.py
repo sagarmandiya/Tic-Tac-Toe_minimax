@@ -14,7 +14,7 @@ class TicTacToe:
     
     def __init__(self):
         self.moves = 0
-        self.board = ['-'] * 9
+        self.board = [' '] * 9
         self.play()
 
 
@@ -40,24 +40,21 @@ class TicTacToe:
         # Prompt to set self.p1_ctrl as 'AI' or 'HMN'
         self.p1_ctrl = 'HMN'
         # Prompt to set self.p2_ctrl as 'AI' or 'HMN'
-        self.p2_ctrl = 'AI'
-
+        self.p2_ctrl = 'HMN'
         return
 
     def movePrompt(self):
 
-        # A move is a vector of position (0-8) and symbol ('X','O')
-        # Set a default, invalid move to begin with
-        move = -1
+        # A move is an integer of position (0-8)
 
         while True:
             
+            # Prompt player for a move (change existing 'move' variable)
+            move = int(input("Enter the position [0-8]: ")) 
+
             # Check first so that only valid moves will be returned by this function
             if self.isValidMove(move):
                 return move
-            else:
-                # Prompt player for a move (change existing 'move' variable)
-                move = int(input("Enter the position [0-8]: ")) 
 
 
     def getMove(self):
@@ -96,10 +93,8 @@ class TicTacToe:
         
         board = self.board
         board[move] = curr_sym
-        os.system("clear")
-        self.drawBoard()
 
-    def printOutput(result):
+    def printOutput(self, result):
         # Print the result of the game
         if(result == "Cats"):
             print("\nDraw!\n")
@@ -214,29 +209,29 @@ class TicTacToe:
         # Diagonal: (0,4,8), (2,4,6)
 
         # Horizontal Wins
-        if self.board[0] == self.board[1] == self.board[2]:
+        if (self.board[0] == self.board[1] == self.board[2] and self.board[0] != ' '):
             return self.board[0]
-        elif self.board[3] == self.board[4] == self.board[5]:
+        elif (self.board[3] == self.board[4] == self.board[5] and self.board[3] != ' '):
             return self.board[3]
-        elif self.board[6] == self.board[7] == self.board[8]:
+        elif (self.board[6] == self.board[7] == self.board[8] and self.board[6] != ' '):
             return self.board[6]
 
         # Vertical Wins
-        if self.board[0] == self.board[3] == self.board[6]:
+        if (self.board[0] == self.board[3] == self.board[6] and self.board[0] != ' '):
             return self.board[0]
-        elif self.board[1] == self.board[4] == self.board[7]:
+        elif (self.board[1] == self.board[4] == self.board[7] and self.board[1] != ' '):
             return self.board[1]
-        elif self.board[2] == self.board[5] == self.board[8]:
+        elif (self.board[2] == self.board[5] == self.board[8] and self.board[2] != ' '):
             return self.board[2]
 
         # Diagonal Wins
-        if self.board[0] == self.board[4] == self.board[8]:
+        if (self.board[0] == self.board[4] == self.board[8] and self.board[0] != ' '):
             return self.board[0]
-        elif self.board[2] == self.board[4] == self.board[6]:
+        elif (self.board[2] == self.board[4] == self.board[6] and self.board[2] != ' '):
             return self.board[2]
 
         # No free squares left
-        if '-' not in self.board:
+        if ' ' not in self.board:
             return "Cats"
         # No end condition met (game not over yet)
         else:
@@ -245,8 +240,10 @@ class TicTacToe:
         
     # Controlling function for game logic
     def play(self):
+        self.gamePrompt()
         while True:
             
+            os.system("clear")
             self.drawBoard()
             result = self.check_game_over()
             if result != "":
