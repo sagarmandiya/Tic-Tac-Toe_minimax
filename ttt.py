@@ -1,3 +1,8 @@
+import tkinter as tk
+from tkinter import *
+from tkinter import messagebox
+from functools import partial
+from copy import deepcopy
 import math
 import os
 
@@ -11,16 +16,47 @@ class TicTacToe:
     #p1_ctrl - string of 'AI' or 'HMN' to indicate who is controlling this player
     #p2_ctrl - string of 'AI' or 'HMN' to indicate who is controlling this player
     
+    global board
+    board = [[" " for x in range(3)] for y in range(3)]
+    window = tk.Tk()
+    
     
     def __init__(self):
         self.moves = 0
         self.board = [' '] * 9
         self.play()
-
-
+    
     # ~~~ UI functions ~~~
 
     def drawBoard(self):
+        menu = Tk()
+        menu.geometry("250x250")
+        menu.title("Tic Tac Toe Game")
+        withPC = partial(withpc, menu)
+        withPlayer = partial(withplayer, menu)
+        
+        head = Button(menu,text = "---Welcome to the game---",
+                      activeforeground = 'red',
+                      activebackground = "black", bg = "red",
+                      fg = "black", width = 500, font = 'summer', bd = 5)
+        
+        B1 = Button(menu, text = "Single Player", activeforeground = 'red',command = withPC,
+                   activebackground = 'black', bg = "red", fg = "black",
+                   width = 500, font = 'summer', bd = 5)
+        
+        B2 = Button(menu, text = "Multi Player", command = withPlayer,
+                    activeforeground = 'red',
+                        activebackground = "black", bg = "red", fg = "black",
+                        width = 500, font = 'summer', bd = 5)
+             
+        B3 = Button(menu, text = "Exit", command = menu.quit, activeforeground = 'red',
+                    activebackground = "black", bg = "red", fg = "black",
+                    width = 500, font = 'summer', bd = 5)
+        head.pack(side = 'top')
+        B1.pack(side = 'top')
+        B2.pack(side = 'top')
+        B3.pack(side = 'top')
+        menu.mainloop()
         # prints a visual representation of the board
         # Is run after every move
         # Could clear console each time for a neat representation
@@ -134,67 +170,14 @@ class TicTacToe:
         
         self.makeMove(best_move)
         return
-        
 
-    def minimax(self, maximize):
-        board = self.board
-        # opponent = "X" if player_char == "O" else "O"
+    def max(self):
+        # insert func
+        return
 
-
-        if (self.moves % 2) == 0:
-            # Player2's turn; use self.p2_sym for the appropriate symbol
-            curr_sym = self.p2_sym
-        else:
-            # Player1's turn; use self.p1_sym for the appropriate symbol
-            curr_sym = self.p1_sym
-
-        if (curr_sym == 'X'):
-            next_sym = 'O'
-        else:
-            next_sym = 'X'
-
-        if self.check_game_over() == curr_sym:
-            return 1
-        elif self.check_game_over() == next_sym:
-            return -1
-        elif self.check_game_over() == "Cats":
-            return 0
-
-        if maximize:
-            best_score = -math.inf
-
-            for pos in range(len(board)):
-                if board[pos] == " ":
-                    board[pos] = curr_sym
-                    score = self.minimax(False)
-                    # print("*\n")
-                    # drawBoard(board)
-
-                    # resetting the position
-                    board[pos] = " "
-
-                    if score > best_score:
-                        best_score = score
-            
-            return best_score
-        
-        else:
-            best_score = math.inf
-
-            for pos in range(len(board)):
-                if board[pos] == " ":
-                    board[pos] = next_sym
-                    score = self.minimax(True)
-                    # print("$\n")
-                    # drawBoard(board)
-
-                    # resetting the position
-                    board[pos] = " "
-
-                    if score < best_score:
-                        best_score = score
-            
-            return best_score
+    def min(self):
+        # insert func
+        return
 
     # ~~~ Game Logic functions ~~~
 
@@ -247,14 +230,142 @@ class TicTacToe:
             self.drawBoard()
             result = self.check_game_over()
             if result != "":
-                self.printOutput(result)
+                #self.printOutput(result)
                 self.playAgainPrompt()
                 break
             else:
                 self.moves += 1
-
+    
             self.makeMove(self.getMove())
             
+        
+# Configure text on button while playing with another player
+def get_text(i, j, gb, l1, l2):
+    global sign
+    if board[i][j] == ' ':
+        if sign % 2 == 0:
+            l1.config(state=DISABLED)
+            l2.config(state=ACTIVE)
+            board[i][j] = "X"
+        else:
+            l2.config(state=DISABLED)
+            l1.config(state=ACTIVE)
+            board[i][j] = "O"
+        sign += 1
+        button[i][j].config(text=board[i][j])
+    if winner(board, "X"):
+        gb.destroy()
+        box = messagebox.showinfo("Winner", "Player 1 won the match")
+    elif winner(board, "O"):
+        gb.destroy()
+        box = messagebox.showinfo("Winner", "Player 2 won the match")
+    elif(isfull()):
+        gb.destroy()
+        box = messagebox.showinfo("Tie Game", "Tie Game")
+
+
+
+# Configure text on button while playing with system
+def get_text_pc(i, j, gb, l1, l2):
+    global sign
+    if board[i][j] == ' ':
+        if sign % 2 == 0:
+            l1.config(state=DISABLED)
+            l2.config(state=ACTIVE)
+            board[i][j] = "X"
+        else:
+            button[i][j].config(state=ACTIVE)
+            l2.config(state=DISABLED)
+            l1.config(state=ACTIVE)
+            board[i][j] = "O"
+        sign += 1
+        button[i][j].config(text=board[i][j])
+    x = True
+    if winner(board, "X"):
+        gb.destroy()
+        x = False
+        box = messagebox.showinfo("Winner", "Player won the match")
+    elif winner(board, "O"):
+        gb.destroy()
+        x = False
+        box = messagebox.showinfo("Winner", "Computer won the match")
+    elif(isfull()):
+        gb.destroy()
+        x = False
+        box = messagebox.showinfo("Tie Game", "Tie Game")
+    if(x):
+        if sign % 2 != 0:
+            move = pc()
+            button[move[0]][move[1]].config(state=DISABLED)
+            get_text_pc(move[0], move[1], gb, l1, l2)
+ 
+
+
+#Create the GUI of game board for play along with system
+def gameboard_pc(game_board, l1, l2):
+    global button
+    button = []
+    for i in range(3):
+        m = 3+i
+        button.append(i)
+        button[i] = []
+        for j in range(3):
+            n = j
+            button[i].append(j)
+            get_t = partial(get_text_pc, i, j, game_board, l1, l2)
+            button[i][j] = Button(
+                game_board, bd=5, command=get_t, height=4, width=8)
+            button[i][j].grid(row=m, column=n)
+    game_board.mainloop()
+
+
+# Create the GUI of game board for play along with another player
+def gameboard_pl(game_board, l1, l2):
+    global button
+    button = []
+    for i in range(3):
+        m = 3+i
+        button.append(i)
+        button[i] = []
+        for j in range(3):
+            n = j
+            button[i].append(j)
+            get_t = partial(get_text, i, j, game_board, l1, l2)
+            button[i][j] = Button(
+                game_board, bd=5, command=get_t, height=4, width=8)
+            button[i][j].grid(row=m, column=n)
+    game_board.mainloop()
+    
+    
+# Initialize the game board to play with system
+def withpc(game_board):
+    game_board.destroy()
+    game_board = Tk()
+    game_board.title("Tic Tac Toe")
+    l1 = Button(game_board, text="Player : X", width=10)
+    l1.grid(row=1, column=1)
+    l2 = Button(game_board, text = "Computer : O",
+                width = 10, state = DISABLED)
+     
+    l2.grid(row = 2, column = 1)
+    gameboard_pc(game_board, l1, l2)
+     
+        
+     
+# Initialize the game board to play with another player
+def withplayer(game_board):
+    game_board.destroy()
+    game_board = Tk()
+    game_board.title("Tic Tac Toe")
+    l1 = Button(game_board, text = "Player 1 : X", width = 10)
+     
+    l1.grid(row = 1, column = 1)
+    l2 = Button(game_board, text = "Player 2 : O",
+                width = 10, state = DISABLED)
+     
+    l2.grid(row = 2, column = 1)
+    gameboard_pl(game_board, l1, l2)
+        
             
 
 def main():
