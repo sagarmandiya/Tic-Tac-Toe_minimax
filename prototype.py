@@ -1,3 +1,10 @@
+# TIC-TAC-TOE
+# Contributions by Sagar Mandiya, Shubham Mishra, Aaron B
+# ROLES: Written by Sagar
+#        Organised by AAron
+#        UI by Shubham
+
+
 import math
 import os
 
@@ -16,8 +23,11 @@ def drawBoard(board):
 
 
 def isValidMove(board, position):
-    if board[position] == " ":
-        return True
+    if position >= 0 and position <= 8:
+        if board[position] == " ":
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -131,31 +141,36 @@ def check_player_won(board, player_char):
     else:
         return 0
 
+# Takes the input and makes the move. 
 def player_move(board, player_char, player):
     position = int(input("Enter the position: ")) 
+    position = position - 1
     makeMove(board, position=position, player_char=player_char, player=player)
 
-def bot_move(board, player_char, player):
-    # position = int(input("Enter the position: ")) - 1
-    # makeMove(board, position=position, player_char=player_char, player=player)
-    best_score = -math.inf
-    best_move = 0
+# function for bot move when the game type is set to pvc
+def bot_move(board, player_char, player, game_type):
+    if game_type == "pvp":
+        position = int(input("Enter the position: "))
+        makeMove(board, position=position, player_char=player_char, player=player)
+    else:
+        best_score = -math.inf
+        best_move = 0
 
-    for pos in range(len(board)):
-        if board[pos] == " ":
-            board[pos] = player_char
-            score = minimax(board, player_char, False)
-            # resetting the position
-            board[pos] = " "
+        for pos in range(len(board)):
+            if board[pos] == " ":
+                board[pos] = player_char
+                score = minimax(board, player_char, False)
+                # resetting the position
+                board[pos] = " "
 
-            if score > best_score:
-                best_score = score
-                best_move = pos 
-    
-    makeMove(board, best_move, player_char, player)
-    return
+                if score > best_score:
+                    best_score = score
+                    best_move = pos 
+        
+        makeMove(board, best_move, player_char, player)
+        return
 
-
+# Minimax function to 
 def minimax(board, player_char, maximize):
     # opponent = "X" if player_char == "O" else "O"
 
@@ -206,12 +221,18 @@ def minimax(board, player_char, maximize):
 
 
 board = [" "] * 9
-drawBoard(board=board)
 
 human = "X"
 bot = "O"
+game_type = "pvc"
 
 first_player = human
+
+print("\n************* TIC-TAC-TOE *************\n\nWelcome!\n") 
+print("You are playing today as {}\n".format(human))
+print("Enter the position of the board ranging from 1 - 9, going horizontally.\n")
+
+drawBoard(board=board)
 
 while (check_game_over(board) == 0):
     if first_player == human:
@@ -219,11 +240,11 @@ while (check_game_over(board) == 0):
             player_move(board, player_char=human, player="You")
 
         if check_game_over(board) == 0:
-            bot_move(board, player_char=bot, player="Bot")
+            bot_move(board, player_char=bot, player="Bot", game_type=game_type)
     
     else:
         if check_game_over(board) == 0:
-            bot_move(board, player_char=bot, player="Bot")
+            bot_move(board, player_char=bot, player="Bot", game_type=game_type)
 
         if check_game_over(board) == 0:
             player_move(board, player_char=human, player="You")
